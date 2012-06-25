@@ -19,15 +19,24 @@ def watch(dbname, refresh):
                                          'ts': {'$gt': last_ts}}):
             output = []
             output.append(colored('{ts:%H:%M:%S}'.format(**e), 'white'))
-            output.append(colored('{ns}'.format(**e), 'blue'))
+
+            if 'ns' in e:
+                output.append(colored('{ns}'.format(**e), 'blue'))
+
+            # operation
             if e['op'] == 'query':
-                output.append(colored('{query}'.format(**e), 'cyan'))
+                output.append(colored('query {query}'.format(**e), 'cyan'))
+            elif e['op'] == 'update':
+                output.append(colored('update {query}'.format(**e), 'green'))
             elif e['op'] == 'getmore':
-                output.append(colored('getmore {query}'.format(**e), 'grey'))
+                output.append(colored('getmore {0}'.format(e.get('query', '')), 'grey'))
             elif e['op'] == 'command':
                 output.append(colored('{command}'.format(**e), 'cyan'))
             else:
-                output.append('unknown operation: {op}'.format(**e), 'red')
+                output.append(colored('unknown operation: {op}'.format(**e),
+                                      'red'))
+                print e
+
             if 'nscanned' in e:
                 output.append(colored('scanned {nscanned}'.format(**e),
                                       'yellow'))
