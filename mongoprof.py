@@ -9,7 +9,9 @@ import argparse
 from pymongo import Connection
 from termcolor import colored
 
+# global quit monitor
 quit = False
+
 
 def watch(dbname, refresh):
     global quit
@@ -41,7 +43,8 @@ def watch(dbname, refresh):
             elif e['op'] == 'update':
                 output.append(colored('update {query}'.format(**e), 'green'))
             elif e['op'] == 'getmore':
-                output.append(colored('getmore {0}'.format(e.get('query', '')), 'grey'))
+                output.append(colored('getmore {0}'.format(e.get('query', '')),
+                                      'grey'))
             elif e['op'] == 'command':
                 output.append(colored('{command}'.format(**e), 'cyan'))
             else:
@@ -63,6 +66,7 @@ def watch(dbname, refresh):
             print(' '.join(output))
             last_ts = e['ts']
         time.sleep(refresh)
+
 
 def main():
     parser = argparse.ArgumentParser(description='watch mongo queries')
