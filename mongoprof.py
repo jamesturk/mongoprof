@@ -38,17 +38,18 @@ def watch(dbname, refresh):
                 output.append(colored('{ns}'.format(**e), 'blue'))
 
             # operation
-            if e['op'] == 'query':
+            op = e.get('op')
+            if op == 'query':
                 output.append(colored('query {query}'.format(**e), 'cyan'))
-            elif e['op'] == 'update':
+            elif op == 'update':
                 output.append(colored('update {query}'.format(**e), 'green'))
-            elif e['op'] == 'getmore':
+            elif op == 'getmore':
                 output.append(colored('getmore {0}'.format(e.get('query', '')),
                                       'grey'))
-            elif e['op'] == 'command':
+            elif op == 'command':
                 output.append(colored('{command}'.format(**e), 'cyan'))
             else:
-                output.append(colored('unknown operation: {op}'.format(**e),
+                output.append(colored('unknown operation: {0}'.format(op),
                                       'red'))
                 print(e)
 
@@ -62,7 +63,9 @@ def watch(dbname, refresh):
                                       'green'))
             if e.get('scanAndOrder'):
                 output.append(colored('scanAndOrder', 'red'))
-            output.append(colored('{millis}ms'.format(**e), 'green'))
+
+            if 'millis' in e:
+                output.append(colored('{millis}ms'.format(**e), 'green'))
             print(' '.join(output))
             last_ts = e['ts']
         time.sleep(refresh)
