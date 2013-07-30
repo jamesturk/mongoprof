@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='mongoprof',
-    version='0.1.0',
+    version='0.2.0',
     author='James Turk',
     author_email='jturk@sunlightfoundation.com',
     url='http://github.com/sunlightlabs/mongoprof',

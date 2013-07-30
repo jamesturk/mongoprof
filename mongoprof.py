@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 
 import time
 import datetime
@@ -13,10 +13,10 @@ from termcolor import colored
 quit = False
 
 
-def watch(dbname, refresh):
+def watch(dbname, refresh, slowms=0):
     global quit
     db = getattr(Connection('localhost'), dbname)
-    db.set_profiling_level(2)
+    db.set_profiling_level(1 if slowms else 2, slowms or 100)
     last_ts = datetime.datetime.utcnow()
     exclude_name = '{0}.system.profile'.format(dbname)
 
@@ -74,8 +74,10 @@ def watch(dbname, refresh):
 def main():
     parser = argparse.ArgumentParser(description='watch mongo queries')
     parser.add_argument('dbname', help='name of database to watch')
+    parser.add_argument('--slowms', type=int, default=0,
+                        help='only show transactions slower than ms')
     args = parser.parse_args()
-    watch(args.dbname, 0.1)
+    watch(args.dbname, 0.1, args.slowms)
 
 
 if __name__ == '__main__':
