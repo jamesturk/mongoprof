@@ -13,9 +13,9 @@ from termcolor import colored
 quit = False
 
 
-def watch(dbname, refresh, slowms=0):
+def watch(host, dbname, refresh, slowms=0):
     global quit
-    db = getattr(Connection('localhost'), dbname)
+    db = getattr(Connection(host), dbname)
     db.set_profiling_level(1 if slowms else 2, slowms or 100)
     last_ts = datetime.datetime.utcnow()
     exclude_name = '{0}.system.profile'.format(dbname)
@@ -74,10 +74,11 @@ def watch(dbname, refresh, slowms=0):
 def main():
     parser = argparse.ArgumentParser(description='watch mongo queries')
     parser.add_argument('dbname', help='name of database to watch')
+    parser.add_argument('--host', help='hostname', default='localhost')
     parser.add_argument('--slowms', type=int, default=0,
                         help='only show transactions slower than ms')
     args = parser.parse_args()
-    watch(args.dbname, 0.1, args.slowms)
+    watch(args.host, args.dbname, 0.1, args.slowms)
 
 
 if __name__ == '__main__':
