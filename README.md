@@ -1,5 +1,5 @@
-mongowatch
-==========
+mongoprof
+=========
 
 Log watcher for `MongoDB <http://mongodb.org>`_.
 
