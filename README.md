@@ -14,7 +14,11 @@ Usage
 
     If slowms is included the log level will be set to only log queries slower than ``ms``
     milliseconds.
+    
+    
+Example Output:
 
+![](https://raw2.github.com/sunlightlabs/mongoprof/master/example.png)
 
 
 BSD-licensed. (see LICENSE)
