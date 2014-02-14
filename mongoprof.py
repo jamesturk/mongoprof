@@ -16,6 +16,8 @@ quit = False
 def watch(host, dbname, refresh, slowms=0):
     global quit
     db = getattr(Connection(host), dbname)
+    # 1 - slow operations
+    # 2 - all operations
     db.set_profiling_level(1 if slowms else 2, slowms or 100)
     last_ts = datetime.datetime.utcnow()
     exclude_name = '{0}.system.profile'.format(dbname)
@@ -29,8 +31,7 @@ def watch(host, dbname, refresh, slowms=0):
     signal.signal(signal.SIGINT, ctrl_c)
 
     while not quit:
-        for e in db.system.profile.find({'ns': {'$ne': exclude_name},
-                                         'ts': {'$gt': last_ts}}):
+        for e in db.system.profile.find({'ns': {'$ne': exclude_name}, 'ts': {'$gt': last_ts}}):
             output = []
             output.append(colored('{ts:%H:%M:%S}'.format(**e), 'white'))
 
@@ -44,23 +45,19 @@ def watch(host, dbname, refresh, slowms=0):
             elif op == 'update':
                 output.append(colored('update {query}'.format(**e), 'green'))
             elif op == 'getmore':
-                output.append(colored('getmore {0}'.format(e.get('query', '')),
-                                      'grey'))
+                output.append(colored('getmore {0}'.format(e.get('query', '')), 'grey'))
             elif op == 'command':
                 output.append(colored('{command}'.format(**e), 'cyan'))
             else:
-                output.append(colored('unknown operation: {0}'.format(op),
-                                      'red'))
+                output.append(colored('unknown operation: {0}'.format(op), 'red'))
                 print(e)
 
             if 'nscanned' in e:
-                output.append(colored('scanned {nscanned}'.format(**e),
-                                      'yellow'))
+                output.append(colored('scanned {nscanned}'.format(**e), 'yellow'))
             if 'ntoskip' in e:
                 output.append(colored('skip {ntoskip}'.format(**e), 'blue'))
             if 'nreturned' in e:
-                output.append(colored('returned {nreturned}'.format(**e),
-                                      'green'))
+                output.append(colored('returned {nreturned}'.format(**e), 'green'))
             if e.get('scanAndOrder'):
                 output.append(colored('scanAndOrder', 'red'))
 
