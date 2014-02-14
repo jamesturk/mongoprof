@@ -3,8 +3,15 @@ mongoprof
 
 Log watcher for [MongoDB](http://mongodb.org)
 
+Installation
+------------
+
+Just ``python setup.py install``
+
+
 Usage
 -----
+
 
 ``./mongoprof [--host hostname] [--slowms ms] dbname``
 
