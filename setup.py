@@ -9,6 +9,6 @@ setup(
     scripts=['mongoprof.py'],
     license='BSD',
     description='command line tool for watching mongodb queries',
-    long_description=open('README.rst').read(),
+    long_description=open('README.md').read(),
     install_requires=['pymongo', 'termcolor'],
 )
