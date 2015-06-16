@@ -25,9 +25,5 @@ If slowms is included the log level will be set to only log queries slower than 
     
 Example Output:
 
-![](https://raw.githubusercontent.com/sunlightlabs/mongoprof/master/example.png)
+![](https://raw.githubusercontent.com/jamesturk/mongoprof/master/example.png)
 
-
-BSD-licensed. (see LICENSE)
-
-Copyright 2012 Sunlight Foundation, James Turk
