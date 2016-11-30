@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-__version__ = '0.2.0'
+__version__ = '0.3.0'
 
 import time
 import datetime
@@ -18,7 +18,7 @@ def watch(host, dbname, refresh, slowms=0):
     db = getattr(Connection(host), dbname)
     # 1 - slow operations
     # 2 - all operations
-    db.set_profiling_level(1 if slowms else 2, slowms or 100)
+    db.set_profiling_level(1 if slowms else 2, slowms)
     last_ts = datetime.datetime.utcnow()
     exclude_name = '{0}.system.profile'.format(dbname)
 
